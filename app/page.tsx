@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, Copy, Clock, Star } from 'lucide-react';
 
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,9 +23,9 @@ export default function GlobalDealsHub() {
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl">🌍</div>
-            <h1 className="text-2xl font-bold tracking-tight">Global Deals Hub</h1>
+            <h1 className="text-2xl font-bold">Global Deals Hub</h1>
           </div>
-          <div className="text-sm text-zinc-400">1,847 deals live right now</div>
+          <div className="text-sm text-zinc-400">1,847 deals live</div>
         </div>
       </nav>
 
@@ -36,43 +35,37 @@ export default function GlobalDealsHub() {
           <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Shop Smarter.</span>
         </h1>
         <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
-          Verified discounts, promo codes & deals from around the world
+          Verified discounts and promo codes from around the world
         </p>
 
         <div className="max-w-2xl mx-auto relative">
-          <Search className="absolute left-6 top-5 text-zinc-400" size={24} />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search stores or deals..."
-            className="w-full bg-zinc-900 border border-white/20 rounded-3xl py-5 pl-16 pr-8 text-lg focus:outline-none focus:border-blue-500"
+            className="w-full bg-zinc-900 border border-white/20 rounded-3xl py-5 px-6 text-lg focus:outline-none focus:border-blue-500"
           />
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="flex items-center gap-4 mb-10">
-          <Star className="w-8 h-8 text-yellow-400" />
-          <h2 className="text-4xl font-bold">Hot Deals Right Now</h2>
-        </div>
+        <h2 className="text-4xl font-bold mb-10">Hot Deals Right Now</h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {hotDeals.map((deal, i) => (
-            <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-blue-500 transition-all group">
+            <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-blue-500 transition-all">
               <div className="text-4xl font-bold text-green-400 mb-4">{deal.discount}</div>
               <h3 className="text-2xl font-semibold mb-1">{deal.title}</h3>
               <p className="text-zinc-400 mb-6">{deal.store}</p>
               
               <button 
                 onClick={() => copyCode(deal.code)}
-                className="w-full bg-white text-black py-4 rounded-2xl font-semibold hover:bg-green-400 flex items-center justify-center gap-2 transition-all active:scale-95"
+                className="w-full bg-white text-black py-4 rounded-2xl font-semibold hover:bg-green-400 transition"
               >
-                <Copy size={18} /> Copy Code
+                Copy Code
               </button>
-              <p className="text-xs text-zinc-500 text-center mt-3 flex items-center justify-center gap-1">
-                <Clock size={14} /> Expires in {deal.expires}
-              </p>
+              <p className="text-xs text-zinc-500 text-center mt-3">Expires in {deal.expires}</p>
             </div>
           ))}
         </div>
