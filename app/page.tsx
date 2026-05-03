@@ -6,10 +6,17 @@ export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const hotDeals = [
-    { title: "Amazon Prime Day Early Access", store: "Amazon", discount: "Up to 70% OFF", code: "PRIME70", expires: "48h" },
-    { title: "Shein Summer Mega Sale", store: "Shein", discount: "60% OFF Everything", code: "SUMMER60", expires: "24h" },
-    { title: "Nike BOGO 50% Off", store: "Nike", discount: "Buy 1 Get 1 50%", code: "BOGO50", expires: "5d" },
-    { title: "Fashion Nova Extra 30%", store: "Fashion Nova", discount: "30% OFF Sitewide", code: "FN30", expires: "3d" },
+    { store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", expires: "48h" },
+    { store: "Shein", title: "Summer Mega Sale", discount: "60% OFF Everything", code: "SUMMER60", expires: "24h" },
+    { store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", expires: "5d" },
+    { store: "Fashion Nova", title: "Extra 30% Off", discount: "30% OFF Sitewide", code: "FN30", expires: "3d" },
+  ];
+
+  const propFirms = [
+    { name: "FTMO", maxFunding: "$200K", profitSplit: "80-90%", fee: "$155-$999", rating: "4.9", bestFor: "Serious Traders" },
+    { name: "The Funded Trader", maxFunding: "$400K", profitSplit: "80-90%", fee: "$65-$999", rating: "4.7", bestFor: "High Capital" },
+    { name: "FundedNext", maxFunding: "$200K", profitSplit: "80-95%", fee: "$99-$999", rating: "4.8", bestFor: "Beginners" },
+    { name: "My Forex Funds", maxFunding: "$400K", profitSplit: "85%", fee: "$49-$999", rating: "4.6", bestFor: "Aggressive" },
   ];
 
   const copyCode = (code: string) => {
@@ -23,44 +30,30 @@ export default function GlobalDealsHub() {
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl">🌍</div>
-            <h1 className="text-2xl font-bold tracking-tight">Global Deals Hub</h1>
+            <div className="text-3xl">🌍</div>
+            <h1 className="text-2xl font-bold">Global Deals Hub</h1>
           </div>
           <div className="flex gap-8 text-sm">
-            <a href="#deals" className="hover:text-blue-400 transition">Deals</a>
-            <a href="/prop-firms" className="hover:text-blue-400 transition">Prop Firms</a>
-            <a href="#fashion" className="hover:text-blue-400 transition">Fashion</a>
+            <a href="#deals" className="hover:text-blue-400">Deals</a>
+            <a href="#propfirms" className="hover:text-blue-400">Prop Firms</a>
           </div>
-          <div className="text-sm text-zinc-400">2,347 deals live</div>
         </div>
       </nav>
 
       {/* Hero */}
-      <div className="pt-28 pb-20 bg-gradient-to-br from-zinc-900 to-black text-center px-6">
+      <div className="pt-28 pb-16 bg-gradient-to-br from-zinc-900 to-black text-center px-6">
         <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-6">
           Save More.<br />
-          <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Shop Smarter.</span>
+          <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Shop Smarter.</span>
         </h1>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
-          Verified discounts, promo codes & exclusive deals from around the world
+        <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
+          Verified discounts &amp; the best prop firms compared
         </p>
-
-        <div className="max-w-2xl mx-auto relative">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search stores or deals..."
-            className="w-full bg-zinc-900 border border-white/20 rounded-3xl py-5 px-6 text-lg focus:outline-none focus:border-blue-500"
-          />
-        </div>
       </div>
 
       {/* Hot Deals */}
       <div id="deals" className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold mb-10 flex items-center gap-3">
-          🔥 Hot Deals Right Now
-        </h2>
+        <h2 className="text-4xl font-bold mb-10">🔥 Hot Deals Right Now</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {hotDeals.map((deal, i) => (
             <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-blue-500 transition-all">
@@ -78,27 +71,35 @@ export default function GlobalDealsHub() {
         </div>
       </div>
 
-      {/* Shein & Fashion Nova Section */}
-      <div id="fashion" className="bg-zinc-900 py-20">
+      {/* Prop Firms */}
+      <div id="propfirms" className="bg-zinc-900 py-20">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold mb-12 text-center">Shein & Fashion Nova Deals</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-black/50 border border-pink-500/30 rounded-3xl p-10">
-              <h3 className="text-3xl font-bold text-pink-400 mb-4">Shein</h3>
-              <p className="text-5xl font-bold mb-6">60% OFF</p>
-              <p className="text-xl mb-8">Summer Mega Sale + Extra coupons</p>
-              <button onClick={() => copyCode('SUMMER60')} className="bg-pink-600 hover:bg-pink-500 px-8 py-4 rounded-2xl font-semibold">
-                Copy SUMMER60
-              </button>
-            </div>
-            <div className="bg-black/50 border border-purple-500/30 rounded-3xl p-10">
-              <h3 className="text-3xl font-bold text-purple-400 mb-4">Fashion Nova</h3>
-              <p className="text-5xl font-bold mb-6">30% OFF</p>
-              <p className="text-xl mb-8">Sitewide + Free Shipping over $75</p>
-              <button onClick={() => copyCode('FN30')} className="bg-purple-600 hover:bg-purple-500 px-8 py-4 rounded-2xl font-semibold">
-                Copy FN30
-              </button>
-            </div>
+          <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full bg-zinc-950 rounded-3xl overflow-hidden">
+              <thead>
+                <tr className="bg-zinc-800">
+                  <th className="p-6 text-left">Firm</th>
+                  <th className="p-6 text-left">Max Funding</th>
+                  <th className="p-6 text-left">Profit Split</th>
+                  <th className="p-6 text-left">Fee</th>
+                  <th className="p-6 text-left">Rating</th>
+                  <th className="p-6 text-left">Best For</th>
+                </tr>
+              </thead>
+              <tbody>
+                {propFirms.map((firm, i) => (
+                  <tr key={i} className="border-t border-white/10 hover:bg-zinc-900">
+                    <td className="p-6 font-bold">{firm.name}</td>
+                    <td className="p-6 text-green-400">{firm.maxFunding}</td>
+                    <td className="p-6">{firm.profitSplit}</td>
+                    <td className="p-6">{firm.fee}</td>
+                    <td className="p-6">⭐ {firm.rating}</td>
+                    <td className="p-6 text-zinc-400">{firm.bestFor}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
