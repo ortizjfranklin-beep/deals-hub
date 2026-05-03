@@ -25,7 +25,7 @@ export default function GlobalDealsHub() {
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center text-2xl">🌍</div>
             <h1 className="text-2xl font-bold">Global Deals Hub</h1>
           </div>
-          <div className="text-sm text-zinc-400">1,847 deals live</div>
+          <div className="text-sm text-zinc-400">1,847 deals live right now</div>
         </div>
       </nav>
 
@@ -50,7 +50,7 @@ export default function GlobalDealsHub() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold mb-10">Hot Deals Right Now</h2>
+        <h2 className="text-4xl font-bold mb-10">🔥 Hot Deals Right Now</h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {hotDeals.map((deal, i) => (
@@ -61,11 +61,11 @@ export default function GlobalDealsHub() {
               
               <button 
                 onClick={() => copyCode(deal.code)}
-                className="w-full bg-white text-black py-4 rounded-2xl font-semibold hover:bg-green-400 transition"
+                className="w-full bg-white text-black py-4 rounded-2xl font-semibold hover:bg-green-400 transition mb-3"
               >
                 Copy Code
               </button>
-              <p className="text-xs text-zinc-500 text-center mt-3">Expires in {deal.expires}</p>
+              <p className="text-xs text-zinc-500 text-center">Expires in {deal.expires}</p>
             </div>
           ))}
         </div>
