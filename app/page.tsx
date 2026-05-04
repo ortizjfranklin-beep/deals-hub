@@ -41,7 +41,7 @@ export default function GlobalDealsHub() {
     { category: 'Fashion', store: "H&M", logo: "https://logo.clearbit.com/hm.com", title: "Summer Sale", discount: "Up to 50% OFF", code: "HM50", affiliate: "https://hm.com" },
     { category: 'Fashion', store: "Zalando", logo: "https://logo.clearbit.com/zalando.nl", title: "Summer Fashion Sale", discount: "Up to 60% OFF", code: "ZALANDO60", affiliate: "https://zalando.nl" },
 
-    // Sports & Shoes
+    // Sports
     { category: 'Sports', store: "Nike", logo: "https://logo.clearbit.com/nike.com", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://nike.com" },
     { category: 'Sports', store: "Adidas", logo: "https://logo.clearbit.com/adidas.com", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://adidas.com" },
     { category: 'Sports', store: "Foot Locker", logo: "https://logo.clearbit.com/footlocker.com", title: "Big Sale", discount: "Up to 60% OFF Shoes", code: "FL60", affiliate: "https://footlocker.com" },
@@ -54,7 +54,7 @@ export default function GlobalDealsHub() {
     // Beauty
     { category: 'Beauty', store: "Sephora", logo: "https://logo.clearbit.com/sephora.com", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://sephora.com" },
 
-    // Home & Netherlands
+    // Home
     { category: 'Home', store: "IKEA", logo: "https://logo.clearbit.com/ikea.com", title: "Summer Home Sale", discount: "Up to 40% OFF", code: "IKEA40", affiliate: "https://ikea.com" },
     { category: 'Home', store: "Bol.com", logo: "https://logo.clearbit.com/bol.com", title: "Home & Garden Sale", discount: "Up to 50% OFF", code: "BOL50", affiliate: "https://bol.com" },
 
@@ -107,6 +107,7 @@ export default function GlobalDealsHub() {
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-zinc-950 text-white' : 'bg-white text-zinc-900'}`}>
+      {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <a href="#" className="flex items-center gap-4 hover:opacity-80 transition">
@@ -119,6 +120,7 @@ export default function GlobalDealsHub() {
         </div>
       </nav>
 
+      {/* Hero */}
       <div className="pt-32 pb-20 bg-gradient-to-br from-zinc-900 to-black text-center px-6">
         <div className="inline-flex items-center gap-3 bg-white/10 px-6 py-3 rounded-full mb-6">
           <Flame className="text-orange-400" /> Trending Worldwide
@@ -129,6 +131,7 @@ export default function GlobalDealsHub() {
         </h1>
       </div>
 
+      {/* Search + Sort */}
       <div className="max-w-4xl mx-auto px-6 -mt-8 mb-8 flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-6 top-7 text-zinc-500" size={24} />
@@ -146,6 +149,7 @@ export default function GlobalDealsHub() {
         </select>
       </div>
 
+      {/* Category Tabs */}
       <div className="max-w-7xl mx-auto px-6 pb-8 flex gap-3 flex-wrap justify-center">
         {categories.map(cat => (
           <button
@@ -160,23 +164,32 @@ export default function GlobalDealsHub() {
         ))}
       </div>
 
+      {/* Deals Grid */}
       {activeCategory !== 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDeals.map((deal, i) => (
               <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-fuchsia-500 transition-all hover:-translate-y-1">
                 <div className="flex items-center gap-4 mb-6">
-                  <img 
-                    src={deal.logo} 
-                    alt={deal.store} 
-                    className="w-14 h-14 object-contain bg-white rounded-2xl p-2"
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-semibold">{deal.title}</h3>
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center overflow-hidden flex-shrink-0">
+                    <img 
+                      src={deal.logo} 
+                      alt={deal.store} 
+                      className="w-12 h-12 object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        const parent = e.currentTarget.parentNode as HTMLElement;
+                        if (parent) {
+                          parent.innerHTML = `<div class="w-12 h-12 bg-zinc-800 rounded-2xl flex items-center justify-center text-3xl font-bold text-white">${deal.store[0]}</div>`;
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-2xl font-semibold truncate">{deal.title}</h3>
                     <p className="text-zinc-400">{deal.store}</p>
                   </div>
-                  <button onClick={() => toggleSave(deal.store)} className="text-red-500">
+                  <button onClick={() => toggleSave(deal.store)} className="text-red-500 flex-shrink-0">
                     <Heart className={savedDeals.includes(deal.store) ? 'fill-current' : ''} size={24} />
                   </button>
                 </div>
