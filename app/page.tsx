@@ -6,14 +6,11 @@ import { Copy, ExternalLink, Flame, Clock, Users, Award } from 'lucide-react';
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-
-  const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Prop Firms'];
-
-  const [timeLeft, setTimeLeft] = useState(48 * 3600); // 48 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(48 * 3600); // 48 hours countdown
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+      setTimeLeft(prev => prev > 0 ? prev - 1 : 0);
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -24,13 +21,26 @@ export default function GlobalDealsHub() {
     return `${h}h ${m}m`;
   };
 
+  const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Prop Firms'];
+
   const allDeals = [
-    { category: 'Fashion', store: "Shein", title: "Summer Mega Sale", discount: "60% OFF Everything", code: "SUMMER60", affiliate: "https://shein.com" },
-    { category: 'Fashion', store: "Fashion Nova", title: "30% Off Sitewide", discount: "30% OFF + Free Shipping", code: "FN30", affiliate: "https://fashionnova.com" },
-    { category: 'Fashion', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://nike.com" },
-    { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com" },
-    { category: 'Beauty', store: "Sephora", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://sephora.com" },
-    { category: 'Sports', store: "Adidas", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://adidas.com" },
+    // Fashion
+    { category: 'Fashion', store: "Shein", title: "Summer Mega Sale", discount: "60% OFF Everything", code: "SUMMER60", affiliate: "https://shein.com", expires: "Ends tonight" },
+    { category: 'Fashion', store: "Fashion Nova", title: "30% Off Sitewide", discount: "30% OFF + Free Shipping", code: "FN30", affiliate: "https://fashionnova.com", expires: "12h left" },
+    { category: 'Fashion', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://nike.com", expires: "24h left" },
+    { category: 'Fashion', store: "Zara", title: "Mid-Season Sale", discount: "Up to 50% OFF", code: "ZARA50", affiliate: "https://zara.com", expires: "2 days left" },
+    
+    // Tech
+    { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com", expires: "8h left" },
+    { category: 'Tech', store: "Best Buy", title: "Tech Clearance", discount: "Up to 60% OFF", code: "BB60", affiliate: "https://bestbuy.com", expires: "18h left" },
+    
+    // Beauty
+    { category: 'Beauty', store: "Sephora", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://sephora.com", expires: "36h left" },
+    { category: 'Beauty', store: "Ulta", title: "Beauty Steals", discount: "Buy 1 Get 1 50%", code: "ULTA50", affiliate: "https://ulta.com", expires: "1 day left" },
+    
+    // Sports & Travel
+    { category: 'Sports', store: "Adidas", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://adidas.com", expires: "20h left" },
+    { category: 'Travel', store: "Booking.com", title: "Summer Getaways", discount: "Up to 30% OFF", code: "TRAVEL30", affiliate: "https://booking.com", expires: "3 days left" },
   ];
 
   const propFirms = [
@@ -38,6 +48,7 @@ export default function GlobalDealsHub() {
     { name: "The Funded Trader", maxFunding: "$400,000", profitSplit: "80-90%", fee: "$65-$999", rating: "4.7", bestFor: "High Capital", link: "https://thefundedtrader.com" },
     { name: "FundedNext", maxFunding: "$200,000", profitSplit: "80-95%", fee: "$99-$999", rating: "4.8", bestFor: "Beginners", link: "https://fundednext.com" },
     { name: "My Forex Funds", maxFunding: "$400,000", profitSplit: "85%", fee: "$49-$999", rating: "4.6", bestFor: "Aggressive", link: "https://myforexfunds.com" },
+    { name: "AquaFunded", maxFunding: "$250,000", profitSplit: "80-90%", fee: "$97-$997", rating: "4.5", bestFor: "Scalpers", link: "https://aquafunded.com" },
   ];
 
   const filteredDeals = allDeals.filter(deal => {
@@ -57,7 +68,7 @@ export default function GlobalDealsHub() {
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <a href="#" className="flex items-center gap-4">
+          <a href="#" className="flex items-center gap-4 hover:opacity-80 transition">
             <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-3xl">🌍</div>
             <h1 className="text-3xl font-bold tracking-tight">Global Deals Hub</h1>
           </a>
@@ -74,11 +85,11 @@ export default function GlobalDealsHub() {
           Save More.<br />
           <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">Shop Smarter.</span>
         </h1>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto">Hand-picked deals from the world's best brands</p>
+        <p className="text-xl text-zinc-400 max-w-2xl mx-auto">Hand-picked, verified deals from the world's best brands</p>
       </div>
 
       {/* Search */}
-      <div className="max-w-2xl mx-auto px-6 mb-12 -mt-8 relative z-10">
+      <div className="max-w-2xl mx-auto px-6 -mt-8 mb-12 relative z-10">
         <input
           type="text"
           value={searchTerm}
@@ -88,7 +99,7 @@ export default function GlobalDealsHub() {
         />
       </div>
 
-      {/* Categories */}
+      {/* Category Tabs */}
       <div className="max-w-7xl mx-auto px-6 pb-8 flex gap-3 flex-wrap justify-center">
         {categories.map(cat => (
           <button
@@ -109,7 +120,12 @@ export default function GlobalDealsHub() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDeals.map((deal, i) => (
               <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-fuchsia-500 transition-all hover:-translate-y-1">
-                <div className="text-5xl font-bold text-emerald-400 mb-6">{deal.discount}</div>
+                <div className="flex justify-between items-start mb-6">
+                  <div className="text-5xl font-bold text-emerald-400">{deal.discount}</div>
+                  <div className="flex items-center gap-1 text-orange-400 text-sm">
+                    <Clock size={16} /> {deal.expires}
+                  </div>
+                </div>
                 <h3 className="text-2xl font-semibold mb-2">{deal.title}</h3>
                 <p className="text-zinc-400 mb-8">{deal.store}</p>
 
@@ -166,17 +182,18 @@ export default function GlobalDealsHub() {
         </div>
       )}
 
-      {/* Trust Signals & Footer */}
-      <footer className="bg-black py-16 text-center border-t border-white/10">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="flex justify-center gap-8 text-sm text-zinc-500 mb-8">
-            <div className="flex items-center gap-2"><Users size={18} /> 10,000+ Happy Shoppers</div>
-            <div className="flex items-center gap-2"><Award size={18} /> Deals Verified Daily</div>
-          </div>
-          <p className="text-sm text-zinc-500">
-            This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.
-          </p>
+      {/* Trust Signals */}
+      <div className="bg-black py-12 border-t border-white/10">
+        <div className="max-w-4xl mx-auto px-6 flex flex-wrap justify-center gap-8 text-sm text-zinc-500">
+          <div className="flex items-center gap-2"><Users size={20} /> 10,000+ Happy Shoppers</div>
+          <div className="flex items-center gap-2"><Award size={20} /> Deals Verified Daily</div>
+          <div className="flex items-center gap-2"><Flame size={20} /> Updated Today</div>
         </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-black py-16 text-center text-sm text-zinc-500 border-t border-white/10">
+        This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you. Thank you for supporting us!
       </footer>
     </div>
   );
