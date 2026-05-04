@@ -6,7 +6,7 @@ import { Copy, ExternalLink, Flame, Clock, Users, Award } from 'lucide-react';
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-  const [timeLeft, setTimeLeft] = useState(48 * 3600); // 48 hours countdown
+  const [timeLeft, setTimeLeft] = useState(48 * 3600);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,26 +21,27 @@ export default function GlobalDealsHub() {
     return `${h}h ${m}m`;
   };
 
-  const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Prop Firms'];
+  const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Netherlands', 'Prop Firms'];
 
   const allDeals = [
-    // Fashion
-    { category: 'Fashion', store: "Shein", title: "Summer Mega Sale", discount: "60% OFF Everything", code: "SUMMER60", affiliate: "https://shein.com", expires: "Ends tonight" },
-    { category: 'Fashion', store: "Fashion Nova", title: "30% Off Sitewide", discount: "30% OFF + Free Shipping", code: "FN30", affiliate: "https://fashionnova.com", expires: "12h left" },
-    { category: 'Fashion', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://nike.com", expires: "24h left" },
-    { category: 'Fashion', store: "Zara", title: "Mid-Season Sale", discount: "Up to 50% OFF", code: "ZARA50", affiliate: "https://zara.com", expires: "2 days left" },
-    
-    // Tech
-    { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com", expires: "8h left" },
-    { category: 'Tech', store: "Best Buy", title: "Tech Clearance", discount: "Up to 60% OFF", code: "BB60", affiliate: "https://bestbuy.com", expires: "18h left" },
-    
-    // Beauty
-    { category: 'Beauty', store: "Sephora", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://sephora.com", expires: "36h left" },
-    { category: 'Beauty', store: "Ulta", title: "Beauty Steals", discount: "Buy 1 Get 1 50%", code: "ULTA50", affiliate: "https://ulta.com", expires: "1 day left" },
-    
-    // Sports & Travel
-    { category: 'Sports', store: "Adidas", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://adidas.com", expires: "20h left" },
-    { category: 'Travel', store: "Booking.com", title: "Summer Getaways", discount: "Up to 30% OFF", code: "TRAVEL30", affiliate: "https://booking.com", expires: "3 days left" },
+    // Original Deals
+    { category: 'Fashion', store: "Shein", title: "Summer Mega Sale", discount: "60% OFF Everything", code: "SUMMER60", affiliate: "https://shein.com", expires: "2d left" },
+    { category: 'Fashion', store: "Fashion Nova", title: "30% Off Sitewide", discount: "30% OFF + Free Shipping", code: "FN30", affiliate: "https://fashionnova.com", expires: "18h left" },
+    { category: 'Fashion', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://nike.com", expires: "3d left" },
+    { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com", expires: "5d left" },
+
+    // Netherlands + Extra Clothing Brands
+    { category: 'Netherlands', store: "Bol.com", title: "Summer Sale", discount: "Up to 50% OFF", code: "BOL50", affiliate: "https://bol.com", expires: "1d left" },
+    { category: 'Netherlands', store: "Coolblue", title: "Tech & Electronics Deals", discount: "Up to 40% OFF", code: "COOL40", affiliate: "https://coolblue.nl", expires: "12h left" },
+    { category: 'Netherlands', store: "Zalando", title: "Summer Fashion Sale", discount: "Up to 60% OFF", code: "ZALANDO60", affiliate: "https://zalando.nl", expires: "4d left" },
+    { category: 'Netherlands', store: "HEMA", title: "Weekly Deals", discount: "Up to 30% OFF", code: "HEMA30", affiliate: "https://hema.nl", expires: "6h left" },
+    { category: 'Netherlands', store: "Wehkamp", title: "Big Summer Sale", discount: "Up to 50% OFF", code: "WEHKAMP50", affiliate: "https://wehkamp.nl", expires: "2d left" },
+
+    // Extra Popular Clothing Brands
+    { category: 'Fashion', store: "H&M", title: "Summer Sale", discount: "Up to 50% OFF", code: "HM50", affiliate: "https://hm.com", expires: "1d left" },
+    { category: 'Fashion', store: "Zara", title: "Mid-Season Sale", discount: "Up to 50% OFF", code: "ZARA50", affiliate: "https://zara.com", expires: "36h left" },
+    { category: 'Fashion', store: "Mango", title: "Summer Collection", discount: "Up to 40% OFF", code: "MANGO40", affiliate: "https://mango.com", expires: "48h left" },
+    { category: 'Fashion', store: "Bershka", title: "Flash Sale", discount: "Up to 60% OFF", code: "BERSHKA60", affiliate: "https://bershka.com", expires: "8h left" },
   ];
 
   const propFirms = [
@@ -48,7 +49,6 @@ export default function GlobalDealsHub() {
     { name: "The Funded Trader", maxFunding: "$400,000", profitSplit: "80-90%", fee: "$65-$999", rating: "4.7", bestFor: "High Capital", link: "https://thefundedtrader.com" },
     { name: "FundedNext", maxFunding: "$200,000", profitSplit: "80-95%", fee: "$99-$999", rating: "4.8", bestFor: "Beginners", link: "https://fundednext.com" },
     { name: "My Forex Funds", maxFunding: "$400,000", profitSplit: "85%", fee: "$49-$999", rating: "4.6", bestFor: "Aggressive", link: "https://myforexfunds.com" },
-    { name: "AquaFunded", maxFunding: "$250,000", profitSplit: "80-90%", fee: "$97-$997", rating: "4.5", bestFor: "Scalpers", link: "https://aquafunded.com" },
   ];
 
   const filteredDeals = allDeals.filter(deal => {
@@ -79,13 +79,12 @@ export default function GlobalDealsHub() {
       {/* Hero */}
       <div className="pt-32 pb-20 bg-gradient-to-br from-zinc-900 to-black text-center px-6">
         <div className="inline-flex items-center gap-3 bg-white/10 px-6 py-3 rounded-full mb-6">
-          <Flame className="text-orange-400" /> Trending Worldwide
+          <Flame className="text-orange-400" /> Trending Worldwide & Netherlands
         </div>
         <h1 className="text-6xl md:text-7xl font-bold tracking-tighter mb-6">
           Save More.<br />
           <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">Shop Smarter.</span>
         </h1>
-        <p className="text-xl text-zinc-400 max-w-2xl mx-auto">Hand-picked, verified deals from the world's best brands</p>
       </div>
 
       {/* Search */}
