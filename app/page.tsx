@@ -18,7 +18,7 @@ export default function GlobalDealsHub() {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     return `${h}h ${m}m`;
@@ -47,7 +47,7 @@ export default function GlobalDealsHub() {
     return matchesCategory && matchesSearch;
   });
 
-  const copyCode = (code) => {
+  const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
     alert(`✅ Code copied: ${code}`);
   };
