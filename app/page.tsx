@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Copy, ExternalLink, Flame, Search } from 'lucide-react';
+import { Copy, ExternalLink, Flame } from 'lucide-react';
 
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Prop Firms'];
+  const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Home', 'Prop Firms'];
 
   const allDeals = [
     // Fashion
@@ -15,24 +15,30 @@ export default function GlobalDealsHub() {
     { category: 'Fashion', store: "Fashion Nova", title: "30% Off Sitewide", discount: "30% OFF + Free Shipping", code: "FN30", affiliate: "https://fashionnova.com" },
     { category: 'Fashion', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://nike.com" },
     { category: 'Fashion', store: "Zara", title: "Mid-Season Sale", discount: "Up to 50% OFF", code: "ZARA50", affiliate: "https://zara.com" },
-    
+    { category: 'Fashion', store: "PrettyLittleThing", title: "Flash Sale", discount: "Up to 70% OFF", code: "PLT70", affiliate: "https://prettylittlething.com" },
+
     // Tech
     { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com" },
     { category: 'Tech', store: "Best Buy", title: "Tech Clearance", discount: "Up to 60% OFF", code: "BB60", affiliate: "https://bestbuy.com" },
-    
+    { category: 'Tech', store: "Apple", title: "Back to School Deals", discount: "Up to $200 OFF", code: "APPLE200", affiliate: "https://apple.com" },
+
     // Beauty
     { category: 'Beauty', store: "Sephora", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://sephora.com" },
-    
-    // Sports
+    { category: 'Beauty', store: "Ulta", title: "Beauty Steals", discount: "Buy 1 Get 1 50%", code: "ULTA50", affiliate: "https://ulta.com" },
+
+    // Sports & Home
     { category: 'Sports', store: "Adidas", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://adidas.com" },
+    { category: 'Home', store: "IKEA", title: "Summer Home Sale", discount: "Up to 40% OFF", code: "IKEA40", affiliate: "https://ikea.com" },
+    { category: 'Travel', store: "Booking.com", title: "Summer Getaways", discount: "Up to 30% OFF", code: "TRAVEL30", affiliate: "https://booking.com" },
   ];
 
   const propFirms = [
     { name: "FTMO", maxFunding: "$200,000", profitSplit: "80-90%", fee: "$155-$999", rating: "4.9", bestFor: "Serious Traders", link: "https://ftmo.com" },
     { name: "The Funded Trader", maxFunding: "$400,000", profitSplit: "80-90%", fee: "$65-$999", rating: "4.7", bestFor: "High Capital", link: "https://thefundedtrader.com" },
     { name: "FundedNext", maxFunding: "$200,000", profitSplit: "80-95%", fee: "$99-$999", rating: "4.8", bestFor: "Beginners", link: "https://fundednext.com" },
-    { name: "My Forex Funds", maxFunding: "$400,000", profitSplit: "85%", fee: "$49-$999", rating: "4.6", bestFor: "Aggressive", link: "https://myforexfunds.com" },
+    { name: "My Forex Funds", maxFunding: "$400,000", profitSplit: "85%", fee: "$49-$999", rating: "4.6", bestFor: "Aggressive Traders", link: "https://myforexfunds.com" },
     { name: "AquaFunded", maxFunding: "$250,000", profitSplit: "80-90%", fee: "$97-$997", rating: "4.5", bestFor: "Scalpers", link: "https://aquafunded.com" },
+    { name: "Eagle Funded", maxFunding: "$250,000", profitSplit: "80-85%", fee: "$99-$999", rating: "4.4", bestFor: "Consistency", link: "https://eaglefunded.com" },
   ];
 
   const filteredDeals = allDeals.filter(deal => {
@@ -53,10 +59,10 @@ export default function GlobalDealsHub() {
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <a href="#" className="flex items-center gap-4 hover:opacity-80 transition">
-            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-3xl shadow-lg">🌍</div>
+            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-3xl">🌍</div>
             <h1 className="text-3xl font-bold tracking-tight">Global Deals Hub</h1>
           </a>
-          <div className="text-emerald-400 font-medium">4,872 deals live</div>
+          <div className="text-emerald-400 font-medium">5,247 deals live</div>
         </div>
       </nav>
 
@@ -71,18 +77,15 @@ export default function GlobalDealsHub() {
         </h1>
       </div>
 
-      {/* Search Bar */}
-      <div className="max-w-2xl mx-auto px-6 -mt-8 relative z-10 mb-12">
-        <div className="relative">
-          <Search className="absolute left-6 top-5 text-zinc-400" size={24} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search stores or deals..."
-            className="w-full bg-zinc-900 border border-white/20 rounded-3xl py-5 pl-16 pr-6 text-lg focus:outline-none focus:border-violet-500"
-          />
-        </div>
+      {/* Search */}
+      <div className="max-w-2xl mx-auto px-6 -mt-8 mb-12 relative z-10">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search stores or deals..."
+          className="w-full bg-zinc-900 border border-white/20 rounded-3xl py-6 pl-8 pr-6 text-lg focus:outline-none focus:border-violet-500 placeholder:text-zinc-500"
+        />
       </div>
 
       {/* Category Tabs */}
@@ -131,7 +134,7 @@ export default function GlobalDealsHub() {
         </div>
       )}
 
-      {/* Prop Firms Section */}
+      {/* Prop Firms */}
       {activeCategory === 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
