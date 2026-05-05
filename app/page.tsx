@@ -69,16 +69,8 @@ export default function GlobalDealsHub() {
   };
 
   const shareDeal = (deal: any) => {
-    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: https://globaldealshub.org`;
-    if (navigator.share) {
-      navigator.share({
-        title: deal.title,
-        text: text,
-      });
-    } else {
-      navigator.clipboard.writeText(text);
-      alert('✅ Deal link copied to clipboard!');
-    }
+    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}`;
+    navigator.share?.({ title: deal.title, text }) || alert(text);
   };
 
   const toggleSave = (store: string) => {
@@ -96,6 +88,7 @@ export default function GlobalDealsHub() {
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-zinc-950 text-white' : 'bg-white text-zinc-900'}`}>
+      {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <a href="#" className="flex items-center gap-4 hover:opacity-80 transition">
@@ -108,6 +101,7 @@ export default function GlobalDealsHub() {
         </div>
       </nav>
 
+      {/* Hero */}
       <div className="pt-32 pb-20 bg-gradient-to-br from-zinc-900 to-black text-center px-6">
         <div className="inline-flex items-center gap-3 bg-white/10 px-6 py-3 rounded-full mb-6">
           <Flame className="text-orange-400" /> Trending Worldwide
@@ -118,6 +112,7 @@ export default function GlobalDealsHub() {
         </h1>
       </div>
 
+      {/* Search + Sort */}
       <div className="max-w-4xl mx-auto px-6 -mt-8 mb-8 flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-6 top-7 text-zinc-500" size={24} />
@@ -135,6 +130,7 @@ export default function GlobalDealsHub() {
         </select>
       </div>
 
+      {/* Category Tabs */}
       <div className="max-w-7xl mx-auto px-6 pb-8 flex gap-3 flex-wrap justify-center">
         {categories.map(cat => (
           <button
@@ -149,6 +145,7 @@ export default function GlobalDealsHub() {
         ))}
       </div>
 
+      {/* Deals Grid */}
       {activeCategory !== 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -188,6 +185,7 @@ export default function GlobalDealsHub() {
         </div>
       )}
 
+      {/* Prop Firms */}
       {activeCategory === 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
