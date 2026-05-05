@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Copy, ExternalLink, Flame, Clock, Search, Share2, Heart } from 'lucide-react';
+import { Copy, ExternalLink, Flame, Clock, Search, Share2, Heart, Sun, Moon } from 'lucide-react';
 
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,6 +9,7 @@ export default function GlobalDealsHub() {
   const [sortOption, setSortOption] = useState('discount');
   const [timeLeft, setTimeLeft] = useState(48 * 3600);
   const [savedDeals, setSavedDeals] = useState<string[]>([]);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem('savedDeals');
@@ -70,7 +71,10 @@ export default function GlobalDealsHub() {
   const shareDeal = (deal: any) => {
     const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: https://globaldealshub.org`;
     if (navigator.share) {
-      navigator.share({ title: deal.title, text });
+      navigator.share({
+        title: deal.title,
+        text: text,
+      });
     } else {
       navigator.clipboard.writeText(text);
       alert('✅ Deal link copied to clipboard!');
@@ -85,19 +89,25 @@ export default function GlobalDealsHub() {
     localStorage.setItem('savedDeals', JSON.stringify(newSaved));
   };
 
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle('dark');
+  };
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      {/* Navbar */}
+    <div className={`min-h-screen ${isDark ? 'bg-zinc-950 text-white' : 'bg-white text-zinc-900'}`}>
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <a href="#" className="flex items-center gap-4 hover:opacity-80 transition">
             <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-3xl">🌍</div>
             <h1 className="text-3xl font-bold tracking-tight">Global Deals Hub</h1>
           </a>
+          <button onClick={toggleTheme} className="p-3 rounded-xl hover:bg-zinc-800 transition">
+            {isDark ? <Sun size={24} /> : <Moon size={24} />}
+          </button>
         </div>
       </nav>
 
-      {/* Hero */}
       <div className="pt-32 pb-20 bg-gradient-to-br from-zinc-900 to-black text-center px-6">
         <div className="inline-flex items-center gap-3 bg-white/10 px-6 py-3 rounded-full mb-6">
           <Flame className="text-orange-400" /> Trending Worldwide
@@ -108,7 +118,6 @@ export default function GlobalDealsHub() {
         </h1>
       </div>
 
-      {/* Search + Sort */}
       <div className="max-w-4xl mx-auto px-6 -mt-8 mb-8 flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-6 top-7 text-zinc-500" size={24} />
@@ -126,7 +135,6 @@ export default function GlobalDealsHub() {
         </select>
       </div>
 
-      {/* Category Tabs */}
       <div className="max-w-7xl mx-auto px-6 pb-8 flex gap-3 flex-wrap justify-center">
         {categories.map(cat => (
           <button
@@ -141,7 +149,6 @@ export default function GlobalDealsHub() {
         ))}
       </div>
 
-      {/* Deals Grid */}
       {activeCategory !== 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -165,17 +172,10 @@ export default function GlobalDealsHub() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button 
-                    onClick={() => copyCode(deal.code)} 
-                    className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2"
-                  >
+                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-white text-black py-4 rounded-2xl font-semibold hover:bg-emerald-400 transition flex items-center justify-center gap-2">
                     <Copy size={20} /> Copy Code
                   </button>
-                  <a 
-                    href={deal.affiliate} 
-                    target="_blank" 
-                    className="flex-1 bg-violet-600 hover:bg-violet-500 text-white py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition"
-                  >
+                  <a href={deal.affiliate} target="_blank" className="flex-1 border border-white/30 hover:bg-white/10 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition">
                     Go to Store <ExternalLink size={20} />
                   </a>
                   <button onClick={() => shareDeal(deal)} className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl">
@@ -188,7 +188,6 @@ export default function GlobalDealsHub() {
         </div>
       )}
 
-      {/* Prop Firms */}
       {activeCategory === 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
