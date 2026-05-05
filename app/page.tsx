@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Copy, ExternalLink, Flame, Clock, Search, Share2, Heart, Sun, Moon } from 'lucide-react';
+import { Copy, ExternalLink, Flame, Clock, Search, Share2, Heart } from 'lucide-react';
 
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,7 +9,6 @@ export default function GlobalDealsHub() {
   const [sortOption, setSortOption] = useState('discount');
   const [timeLeft, setTimeLeft] = useState(48 * 3600);
   const [savedDeals, setSavedDeals] = useState<string[]>([]);
-  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem('savedDeals');
@@ -69,8 +68,13 @@ export default function GlobalDealsHub() {
   };
 
   const shareDeal = (deal: any) => {
-    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}`;
-    navigator.share?.({ title: deal.title, text }) || alert(text);
+    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: https://globaldealshub.org`;
+    if (navigator.share) {
+      navigator.share({ title: deal.title, text });
+    } else {
+      navigator.clipboard.writeText(text);
+      alert('✅ Deal link copied to clipboard!');
+    }
   };
 
   const toggleSave = (store: string) => {
@@ -81,23 +85,15 @@ export default function GlobalDealsHub() {
     localStorage.setItem('savedDeals', JSON.stringify(newSaved));
   };
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
-  };
-
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-zinc-950 text-white' : 'bg-white text-zinc-900'}`}>
+    <div className="min-h-screen bg-zinc-950 text-white">
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <a href="#" className="flex items-center gap-4 hover:opacity-80 transition">
-            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-3xl">🌍</div>
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-2xl">🌍</div>
             <h1 className="text-3xl font-bold tracking-tight">Global Deals Hub</h1>
-          </a>
-          <button onClick={toggleTheme} className="p-3 rounded-xl hover:bg-zinc-800 transition">
-            {isDark ? <Sun size={24} /> : <Moon size={24} />}
-          </button>
+          </div>
         </div>
       </nav>
 
@@ -113,7 +109,7 @@ export default function GlobalDealsHub() {
       </div>
 
       {/* Search + Sort */}
-      <div className="max-w-4xl mx-auto px-6 -mt-8 mb-8 flex flex-col md:flex-row gap-4">
+      <div className="max-w-6xl mx-auto px-6 -mt-8 mb-8 flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-6 top-7 text-zinc-500" size={24} />
           <input
@@ -130,7 +126,7 @@ export default function GlobalDealsHub() {
         </select>
       </div>
 
-      {/* Category Tabs */}
+      {/* Categories */}
       <div className="max-w-7xl mx-auto px-6 pb-8 flex gap-3 flex-wrap justify-center">
         {categories.map(cat => (
           <button
@@ -145,37 +141,36 @@ export default function GlobalDealsHub() {
         ))}
       </div>
 
-      {/* Deals Grid */}
-      {activeCategory !== 'Prop Firms' && (
+      {/* Deals / Prop Firms */}
+      {activeCategory !== 'Prop Firms' ? (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDeals.map((deal, i) => (
-              <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-fuchsia-500 transition-all hover:-translate-y-1">
-                <div className="flex items-center justify-between mb-6">
+              <div key={i} className="group bg-zinc-900/80 border border-white/10 backdrop-blur-xl rounded-3xl p-8 hover:border-violet-500/50 hover:shadow-2xl transition-all">
+                <div className="flex justify-between mb-6">
                   <div>
                     <h3 className="text-2xl font-semibold">{deal.title}</h3>
                     <p className="text-zinc-400">{deal.store}</p>
                   </div>
-                  <button onClick={() => toggleSave(deal.store)} className="text-red-500">
-                    <Heart className={savedDeals.includes(deal.store) ? 'fill-current' : ''} size={24} />
+                  <button onClick={() => toggleSave(deal.store)}>
+                    <Heart className={savedDeals.includes(deal.store) ? 'fill-red-500 text-red-500' : 'text-white/40'} size={26} />
                   </button>
                 </div>
 
-                <div className="flex justify-between items-start mb-8">
-                  <div className="text-5xl font-bold text-emerald-400">{deal.discount}</div>
-                  <div className="flex items-center gap-1 text-orange-400 text-sm font-medium">
-                    <Clock size={18} /> {formatTime(timeLeft)}
-                  </div>
+                <div className="text-5xl font-bold text-emerald-400 mb-8">{deal.discount}</div>
+
+                <div className="flex items-center gap-2 text-orange-400 mb-8">
+                  <Clock size={18} /> {formatTime(timeLeft)}
                 </div>
 
                 <div className="flex gap-3">
-                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-white text-black py-4 rounded-2xl font-semibold hover:bg-emerald-400 transition flex items-center justify-center gap-2">
+                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-white/10 hover:bg-white/20 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition">
                     <Copy size={20} /> Copy Code
                   </button>
-                  <a href={deal.affiliate} target="_blank" className="flex-1 border border-white/30 hover:bg-white/10 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition">
+                  <a href={deal.affiliate} target="_blank" className="flex-1 bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition">
                     Go to Store <ExternalLink size={20} />
                   </a>
-                  <button onClick={() => shareDeal(deal)} className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl">
+                  <button onClick={() => shareDeal(deal)} className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl transition">
                     <Share2 size={20} />
                   </button>
                 </div>
@@ -183,51 +178,42 @@ export default function GlobalDealsHub() {
             ))}
           </div>
         </div>
-      )}
-
-      {/* Prop Firms */}
-      {activeCategory === 'Prop Firms' && (
+      ) : (
         <div className="max-w-7xl mx-auto px-6 pb-24">
-          <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full bg-zinc-900 rounded-3xl overflow-hidden">
-              <thead>
-                <tr className="bg-zinc-800">
-                  <th className="p-6 text-left">Firm</th>
-                  <th className="p-6 text-left">Max Funding</th>
-                  <th className="p-6 text-left">Profit Split</th>
-                  <th className="p-6 text-left">Fee</th>
-                  <th className="p-6 text-left">Rating</th>
-                  <th className="p-6 text-left">Best For</th>
-                  <th className="p-6"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { name: "FTMO", maxFunding: "$200,000", profitSplit: "80-90%", fee: "$155-$999", rating: "4.9", bestFor: "Serious Traders", link: "https://ftmo.com" },
-                  { name: "The Funded Trader", maxFunding: "$400,000", profitSplit: "80-90%", fee: "$65-$999", rating: "4.7", bestFor: "High Capital", link: "https://thefundedtrader.com" },
-                  { name: "FundedNext", maxFunding: "$200,000", profitSplit: "80-95%", fee: "$99-$999", rating: "4.8", bestFor: "Beginners", link: "https://fundednext.com" },
-                ].map((firm, i) => (
-                  <tr key={i} className="border-t border-white/10 hover:bg-zinc-800 transition">
-                    <td className="p-6 font-bold">{firm.name}</td>
-                    <td className="p-6 text-emerald-400 font-medium">{firm.maxFunding}</td>
-                    <td className="p-6">{firm.profitSplit}</td>
-                    <td className="p-6">{firm.fee}</td>
-                    <td className="p-6">⭐ {firm.rating}</td>
-                    <td className="p-6 text-zinc-400">{firm.bestFor}</td>
-                    <td className="p-6">
-                      <a href={firm.link} target="_blank" className="bg-violet-600 hover:bg-violet-500 px-8 py-3 rounded-2xl text-sm font-medium inline-block">
-                        Visit & Sign Up →
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="text-center mb-12">
+            <h2 className="text-5xl font-bold mb-3">Best Prop Trading Firms</h2>
+            <p className="text-zinc-400">Choose the right firm for your trading style</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: "FTMO", funding: "$200,000", split: "80-90%", fee: "$155-$999", rating: "4.9", best: "Serious Traders", link: "https://ftmo.com" },
+              { name: "The Funded Trader", funding: "$400,000", split: "80-90%", fee: "$65-$999", rating: "4.7", best: "High Capital", link: "https://thefundedtrader.com" },
+              { name: "FundedNext", funding: "$200,000", split: "80-95%", fee: "$99-$999", rating: "4.8", best: "Beginners", link: "https://fundednext.com" },
+              { name: "MyForexFunds", funding: "$400,000", split: "80-85%", fee: "$49-$999", rating: "4.6", best: "Forex Traders", link: "https://myforexfunds.com" },
+              { name: "SurgeTrader", funding: "$1,000,000", split: "75-90%", fee: "$250-$1,800", rating: "4.5", best: "Aggressive Traders", link: "https://surgetrader.com" },
+            ].map((firm, i) => (
+              <div key={i} className="bg-zinc-900/80 border border-white/10 backdrop-blur-xl rounded-3xl p-8 hover:border-violet-500/50 group">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-3xl font-bold">{firm.name}</h3>
+                  <div className="text-xl">⭐ {firm.rating}</div>
+                </div>
+                <div className="space-y-3 mb-8 text-sm">
+                  <p><span className="text-zinc-400">Max Funding:</span> <span className="text-emerald-400 font-medium">{firm.funding}</span></p>
+                  <p><span className="text-zinc-400">Profit Split:</span> {firm.split}</p>
+                  <p><span className="text-zinc-400">Challenge Fee:</span> {firm.fee}</p>
+                  <p><span className="text-zinc-400">Best For:</span> {firm.best}</p>
+                </div>
+                <a href={firm.link} target="_blank" className="block w-full bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 text-center py-4 rounded-2xl font-semibold transition">
+                  Visit & Sign Up →
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
+      {/* Footer */}
       <footer className="bg-black py-16 text-center text-sm text-zinc-500 border-t border-white/10">
         This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.<br />
         © 2026 Global Deals Hub • All Rights Reserved
