@@ -170,20 +170,17 @@ export default function GlobalDealsHub() {
                 </div>
 
                 <div className="flex gap-3">
-                  {/* Copy Code Button */}
                   <button 
                     onClick={() => copyCode(deal.code)} 
-                    className="flex-1 bg-white hover:bg-gray-100 active:bg-gray-200 text-black py-4 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-md"
+                    className="flex-1 bg-white hover:bg-gray-100 text-black py-4 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-md"
                   >
                     <Copy size={20} /> Copy Code
                   </button>
 
-                  {/* Go to Store Button */}
                   <ShopButton brand={deal.store} url={deal.affiliate}>
                     Go to Store
                   </ShopButton>
 
-                  {/* Share Button */}
                   <button 
                     onClick={() => shareDeal(deal)} 
                     className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl transition-all hover:scale-105 active:scale-95"
@@ -197,39 +194,64 @@ export default function GlobalDealsHub() {
         </div>
       )}
 
-      {/* Prop Firms Section (unchanged) */}
+      {/* Prop Firms */}
       {activeCategory === 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
-          <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
-          {/* Your existing table code here */}
+          <h2 className="text-4xl font-bold mb-4 text-center">Best Prop Trading Firms</h2>
+          <p className="text-center text-zinc-400 mb-12">Choose the right firm for your trading style</p>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { name: "FTMO", maxFunding: "$200,000", profitSplit: "80-90%", fee: "$155-$999", rating: "4.9", bestFor: "Serious Traders", link: "https://ftmo.com" },
+              { name: "The Funded Trader", maxFunding: "$400,000", profitSplit: "80-90%", fee: "$65-$999", rating: "4.7", bestFor: "High Capital", link: "https://thefundedtrader.com" },
+              { name: "FundedNext", maxFunding: "$200,000", profitSplit: "80-95%", fee: "$99-$999", rating: "4.8", bestFor: "Beginners", link: "https://fundednext.com" },
+              { name: "MyForexFunds", maxFunding: "$400,000", profitSplit: "80-85%", fee: "$49-$999", rating: "4.6", bestFor: "Forex Traders", link: "https://myforexfunds.com" },
+              { name: "SurgeTrader", maxFunding: "$1,000,000", profitSplit: "75-90%", fee: "$250-$1,800", rating: "4.5", bestFor: "Aggressive Traders", link: "https://surgetrader.com" },
+            ].map((firm, i) => (
+              <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-fuchsia-500 transition-all hover:-translate-y-1">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-2xl font-bold">{firm.name}</h3>
+                  <div className="text-emerald-400 font-semibold">⭐ {firm.rating}</div>
+                </div>
+                <div className="space-y-4 mb-8 text-sm">
+                  <div><span className="text-zinc-400">Max Funding:</span> <span className="font-semibold text-emerald-400">{firm.maxFunding}</span></div>
+                  <div><span className="text-zinc-400">Profit Split:</span> <span className="font-semibold">{firm.profitSplit}</span></div>
+                  <div><span className="text-zinc-400">Challenge Fee:</span> <span>{firm.fee}</span></div>
+                  <div><span className="text-zinc-400">Best For:</span> <span className="text-zinc-300">{firm.bestFor}</span></div>
+                </div>
+                <ShopButton brand={firm.name} url={firm.link}>
+                  Visit & Sign Up
+                </ShopButton>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
+      {/* Final Footer with Legal Links */}
       <footer className="bg-black py-16 text-center text-sm text-zinc-500 border-t border-white/10">
-        This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.<br />
-        © 2026 Global Deals Hub • All Rights Reserved
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mb-8">
+            <a href="/affiliate-disclosure" className="hover:text-white transition">Affiliate Disclosure</a>
+            <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
+            <a href="/terms" className="hover:text-white transition">Terms of Service</a>
+          </div>
+
+          <div className="text-xs opacity-70 mb-6">
+            This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.
+          </div>
+
+          <div className="flex items-center justify-center gap-8 text-xs opacity-60">
+            <div>🔒 Secure</div>
+            <div>⭐ Trusted Deals</div>
+            <div>✅ Verified Offers</div>
+          </div>
+
+          <div className="mt-8 text-xs opacity-50">
+            © 2026 Global Deals Hub • All Rights Reserved
+          </div>
+        </div>
       </footer>
     </div>
   );
 }
-<footer className="bg-black py-16 text-center text-sm text-zinc-500 border-t border-white/10">
-  <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
-    <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm">
-      <a href="/affiliate-disclosure" className="hover:text-white transition">Affiliate Disclosure</a>
-      <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
-      <a href="/terms" className="hover:text-white transition">Terms of Service</a>
-    </div>
-
-    <div className="text-xs opacity-70">
-      This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.<br />
-      © 2026 Global Deals Hub • All Rights Reserved
-    </div>
-
-    {/* Trust Signals */}
-    <div className="flex items-center gap-8 text-xs opacity-60 mt-4">
-      <div>🔒 Secure Checkout</div>
-      <div>⭐ Trusted by Thousands</div>
-      <div>✅ Verified Deals</div>
-    </div>
-  </div>
-</footer>
