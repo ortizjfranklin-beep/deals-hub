@@ -212,3 +212,24 @@ export default function GlobalDealsHub() {
     </div>
   );
 }
+<footer className="bg-black py-16 text-center text-sm text-zinc-500 border-t border-white/10">
+  <div className="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6">
+    <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm">
+      <a href="/affiliate-disclosure" className="hover:text-white transition">Affiliate Disclosure</a>
+      <a href="/privacy" className="hover:text-white transition">Privacy Policy</a>
+      <a href="/terms" className="hover:text-white transition">Terms of Service</a>
+    </div>
+
+    <div className="text-xs opacity-70">
+      This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.<br />
+      © 2026 Global Deals Hub • All Rights Reserved
+    </div>
+
+    {/* Trust Signals */}
+    <div className="flex items-center gap-8 text-xs opacity-60 mt-4">
+      <div>🔒 Secure Checkout</div>
+      <div>⭐ Trusted by Thousands</div>
+      <div>✅ Verified Deals</div>
+    </div>
+  </div>
+</footer>
