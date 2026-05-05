@@ -10,13 +10,11 @@ export default function GlobalDealsHub() {
   const [timeLeft, setTimeLeft] = useState(48 * 3600);
   const [savedDeals, setSavedDeals] = useState<string[]>([]);
 
-  // Load saved deals
   useEffect(() => {
     const saved = localStorage.getItem('savedDeals');
     if (saved) setSavedDeals(JSON.parse(saved));
   }, []);
 
-  // Timer
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => prev > 0 ? prev - 1 : 0);
@@ -70,12 +68,19 @@ export default function GlobalDealsHub() {
   };
 
   const shareDeal = (deal: any) => {
-    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: https://globaldealshub.org`;
+    const url = "https://globaldealshub.org";
+    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: ${url}`;
+
     if (navigator.share) {
-      navigator.share({ title: deal.title, text });
+      navigator.share({
+        title: deal.title,
+        text: text,
+        url: url
+      }).catch(() => {});
     } else {
+      // Fallback for desktop
       navigator.clipboard.writeText(text);
-      alert('✅ Deal link copied to clipboard!');
+      alert(`✅ Deal shared! Copied to clipboard:\n\n${text}`);
     }
   };
 
@@ -167,7 +172,7 @@ export default function GlobalDealsHub() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-white text-black py-4 rounded-2xl font-semibold hover:bg-emerald-400 transition flex items-center justify-center gap-2">
+                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2">
                     <Copy size={20} /> Copy Code
                   </button>
                   <a href={deal.affiliate} target="_blank" className="flex-1 border border-white/30 hover:bg-white/10 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition">
