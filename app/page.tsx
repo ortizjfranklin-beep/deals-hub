@@ -8,9 +8,12 @@ export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortOption, setSortOption] = useState('discount');
-  const [timeLeft, setTimeLeft] = useState(48 * 3600);
+  const [timeLeft, setTimeLeft] = useState(48 * 3600); // kept for compatibility
   const [savedDeals, setSavedDeals] = useState<string[]>([]);
   const [isDark, setIsDark] = useState(true);
+
+  // Individual timers for each deal
+  const [dealTimers, setDealTimers] = useState<Record<number, number>>({});
 
   useEffect(() => {
     const saved = localStorage.getItem('savedDeals');
@@ -24,33 +27,57 @@ export default function GlobalDealsHub() {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (seconds: number) => `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m`;
+  // Individual countdowns
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDealTimers(prev => {
+        const updated = { ...prev };
+        allDeals.forEach((deal, index) => {
+          if (updated[index] === undefined) updated[index] = deal.hoursLeft * 3600;
+          if (updated[index] > 0) updated[index] -= 1;
+        });
+        return updated;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    if (seconds <= 0) return "Expired";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    return `${h}h ${m}m`;
+  };
 
   const categories = ['All', 'Fashion', 'Tech', 'Beauty', 'Sports', 'Travel', 'Electronics', 'Home', 'Food', 'Prop Firms'];
 
   const allDeals = [
-    { category: 'Fashion', store: "Victoria's Secret", title: "Semi-Annual Sale", discount: "Up to 70% OFF", code: "VS70", affiliate: "https://www.victoriassecret.com" },
-    { category: 'Fashion', store: "Bath & Body Works", title: "Buy 3 Get 3 Free", discount: "Buy 3 Get 3 Free", code: "BBB3", affiliate: "https://www.bathandbodyworks.com" },
-    { category: 'Fashion', store: "Shein", title: "Summer Mega Sale", discount: "60% OFF Everything", code: "SUMMER60", affiliate: "https://us.shein.com" },
-    { category: 'Fashion', store: "Fashion Nova", title: "30% Off Sitewide", discount: "30% OFF + Free Shipping", code: "FN30", affiliate: "https://www.fashionnova.com" },
-    { category: 'Fashion', store: "Zara", title: "Mid-Season Sale", discount: "Up to 50% OFF", code: "ZARA50", affiliate: "https://www.zara.com" },
-    { category: 'Fashion', store: "H&M", title: "Summer Sale", discount: "Up to 50% OFF", code: "HM50", affiliate: "https://www.hm.com" },
-    { category: 'Fashion', store: "Zalando", title: "Summer Fashion Sale", discount: "Up to 60% OFF", code: "ZALANDO60", affiliate: "https://www.zalando.nl" },
+    { category: 'Fashion', store: "Victoria's Secret", title: "Semi-Annual Sale", discount: "Up to 70% OFF", code: "No code needed", affiliate: "https://www.victoriassecret.com", hoursLeft: 120 },
+    { category: 'Fashion', store: "Bath & Body Works", title: "Buy 3 Get 3 Free", discount: "Buy 3 Get 3 Free", code: "BBB3", affiliate: "https://www.bathandbodyworks.com", hoursLeft: 72 },
+    { category: 'Fashion', store: "Shein", title: "Summer Mega Sale", discount: "Up to 60% OFF", code: "SUMMER60", affiliate: "https://us.shein.com", hoursLeft: 48 },
+    { category: 'Fashion', store: "Fashion Nova", title: "Sitewide Sale", discount: "Up to 45% OFF", code: "GET30", affiliate: "https://www.fashionnova.com", hoursLeft: 168 },
+    { category: 'Fashion', store: "Zara", title: "Mid-Season Sale", discount: "Up to 50% OFF", code: "No code needed", affiliate: "https://www.zara.com", hoursLeft: 96 },
+    { category: 'Fashion', store: "H&M", title: "Summer Sale", discount: "Up to 50% OFF", code: "No code needed", affiliate: "https://www.hm.com", hoursLeft: 36 },
+    { category: 'Fashion', store: "Zalando", title: "Summer Fashion Sale", discount: "Up to 60% OFF", code: "No code needed", affiliate: "https://www.zalando.nl", hoursLeft: 72 },
+    { category: 'Fashion', store: "PrettyLittleThing", title: "Up to 70% Off", discount: "70% OFF Sitewide", code: "PLT70", affiliate: "https://www.prettylittlething.com", hoursLeft: 48 },
+    { category: 'Fashion', store: "ASOS", title: "Big Summer Sale", discount: "Up to 60% OFF", code: "No code needed", affiliate: "https://www.asos.com", hoursLeft: 120 },
 
-    { category: 'Sports', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://www.nike.com" },
-    { category: 'Sports', store: "Adidas", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://www.adidas.com" },
-    { category: 'Sports', store: "Foot Locker", title: "Big Sale", discount: "Up to 60% OFF Shoes", code: "FL60", affiliate: "https://www.footlocker.com" },
-    { category: 'Sports', store: "Puma", title: "Summer Collection", discount: "Up to 40% OFF", code: "PUMA40", affiliate: "https://www.puma.com" },
+    { category: 'Sports', store: "Nike", title: "BOGO 50% Off", discount: "Buy 1 Get 1 50%", code: "BOGO50", affiliate: "https://www.nike.com", hoursLeft: 60 },
+    { category: 'Sports', store: "Adidas", title: "Summer Clearance", discount: "Up to 50% OFF", code: "ADIDAS50", affiliate: "https://www.adidas.com", hoursLeft: 48 },
+    { category: 'Sports', store: "Foot Locker", title: "Big Sale", discount: "Up to 60% OFF Shoes", code: "FL60", affiliate: "https://www.footlocker.com", hoursLeft: 36 },
+    { category: 'Sports', store: "Puma", title: "Summer Collection", discount: "Up to 40% OFF", code: "PUMA40", affiliate: "https://www.puma.com", hoursLeft: 72 },
 
-    { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com" },
-    { category: 'Electronics', store: "Coolblue", title: "Tech & Electronics Deals", discount: "Up to 40% OFF", code: "COOL40", affiliate: "https://www.coolblue.nl" },
+    { category: 'Tech', store: "Amazon", title: "Prime Day Early Access", discount: "Up to 70% OFF", code: "PRIME70", affiliate: "https://amazon.com", hoursLeft: 48 },
+    { category: 'Electronics', store: "Coolblue", title: "Tech & Electronics Deals", discount: "Up to 40% OFF", code: "COOL40", affiliate: "https://www.coolblue.nl", hoursLeft: 24 },
 
-    { category: 'Beauty', store: "Sephora", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://www.sephora.com" },
+    { category: 'Beauty', store: "Sephora", title: "VIB Sale", discount: "20% OFF + Gifts", code: "SEPH20", affiliate: "https://www.sephora.com", hoursLeft: 72 },
+    { category: 'Beauty', store: "Ulta", title: "21 Days of Beauty", discount: "Up to 50% OFF", code: "ULTA50", affiliate: "https://www.ulta.com", hoursLeft: 96 },
 
-    { category: 'Home', store: "IKEA", title: "Summer Home Sale", discount: "Up to 40% OFF", code: "IKEA40", affiliate: "https://www.ikea.com" },
-    { category: 'Home', store: "Bol.com", title: "Home & Garden Sale", discount: "Up to 50% OFF", code: "BOL50", affiliate: "https://www.bol.com" },
+    { category: 'Home', store: "IKEA", title: "Summer Home Sale", discount: "Up to 40% OFF", code: "IKEA40", affiliate: "https://www.ikea.com", hoursLeft: 168 },
+    { category: 'Home', store: "Bol.com", title: "Home & Garden Sale", discount: "Up to 50% OFF", code: "BOL50", affiliate: "https://www.bol.com", hoursLeft: 48 },
 
-    { category: 'Food', store: "Uber Eats", title: "First Order Discount", discount: "$10 OFF", code: "EATS10", affiliate: "https://www.ubereats.com" },
+    { category: 'Food', store: "Uber Eats", title: "First Order Discount", discount: "$10 OFF", code: "EATS10", affiliate: "https://www.ubereats.com", hoursLeft: 24 },
+    { category: 'Food', store: "DoorDash", title: "New User Offer", discount: "$15 OFF", code: "DASH15", affiliate: "https://www.doordash.com", hoursLeft: 36 },
   ];
 
   let filteredDeals = allDeals.filter(deal => {
@@ -65,8 +92,12 @@ export default function GlobalDealsHub() {
   }
 
   const copyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    alert(`✅ Code copied: ${code}`);
+    if (code === "No code needed") {
+      alert("✅ No code needed — just click 'Go to Store'!");
+    } else {
+      navigator.clipboard.writeText(code);
+      alert(`✅ Code copied: ${code}`);
+    }
   };
 
   const shareDeal = (deal: any) => {
@@ -146,55 +177,58 @@ export default function GlobalDealsHub() {
         ))}
       </div>
 
-      {/* Deals Grid */}
+      {/* Deals Grid - Polished with individual timers + better mobile spacing */}
       {activeCategory !== 'Prop Firms' && (
-        <div className="max-w-7xl mx-auto px-6 pb-24">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredDeals.map((deal, i) => (
-              <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-8 hover:border-fuchsia-500 transition-all hover:-translate-y-1">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-2xl font-semibold">{deal.title}</h3>
-                    <p className="text-zinc-400">{deal.store}</p>
+        <div className="max-w-7xl mx-auto px-4 md:px-6 pb-24">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {filteredDeals.map((deal, i) => {
+              const secondsLeft = dealTimers[i] ?? deal.hoursLeft * 3600;
+              return (
+                <div key={i} className="bg-zinc-900 border border-white/10 rounded-3xl p-6 md:p-8 hover:border-fuchsia-500 transition-all hover:-translate-y-1">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h3 className="text-2xl font-semibold">{deal.title}</h3>
+                      <p className="text-zinc-400">{deal.store}</p>
+                    </div>
+                    <button onClick={() => toggleSave(deal.store)} className="text-red-500">
+                      <Heart className={savedDeals.includes(deal.store) ? 'fill-current' : ''} size={24} />
+                    </button>
                   </div>
-                  <button onClick={() => toggleSave(deal.store)} className="text-red-500">
-                    <Heart className={savedDeals.includes(deal.store) ? 'fill-current' : ''} size={24} />
-                  </button>
-                </div>
 
-                <div className="flex justify-between items-start mb-8">
-                  <div className="text-5xl font-bold text-emerald-400">{deal.discount}</div>
-                  <div className="flex items-center gap-1 text-orange-400 text-sm font-medium">
-                    <Clock size={18} /> {formatTime(timeLeft)}
+                  <div className="flex justify-between items-start mb-8">
+                    <div className="text-5xl font-bold text-emerald-400">{deal.discount}</div>
+                    <div className="flex items-center gap-1 text-orange-400 text-sm font-medium">
+                      <Clock size={18} /> {formatTime(secondsLeft)}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button 
+                      onClick={() => copyCode(deal.code)} 
+                      className="flex-1 bg-gradient-to-r from-zinc-700 to-zinc-800 hover:from-zinc-600 hover:to-zinc-700 text-white py-4 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-md"
+                    >
+                      <Copy size={20} /> Copy Code
+                    </button>
+
+                    <ShopButton brand={deal.store} url={deal.affiliate}>
+                      Go to Store
+                    </ShopButton>
+
+                    <button 
+                      onClick={() => shareDeal(deal)} 
+                      className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl transition-all hover:scale-105 active:scale-95"
+                    >
+                      <Share2 size={20} />
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex gap-3">
-                  <button 
-                    onClick={() => copyCode(deal.code)} 
-                    className="flex-1 bg-white hover:bg-gray-100 text-black py-4 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-md"
-                  >
-                    <Copy size={20} /> Copy Code
-                  </button>
-
-                  <ShopButton brand={deal.store} url={deal.affiliate}>
-                    Go to Store
-                  </ShopButton>
-
-                  <button 
-                    onClick={() => shareDeal(deal)} 
-                    className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl transition-all hover:scale-105 active:scale-95"
-                  >
-                    <Share2 size={20} />
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Prop Firms */}
+      {/* Prop Firms - Unchanged */}
       {activeCategory === 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <h2 className="text-4xl font-bold mb-4 text-center">Best Prop Trading Firms</h2>
