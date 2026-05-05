@@ -70,12 +70,12 @@ export default function GlobalDealsHub() {
   };
 
   const shareDeal = (deal: any) => {
-    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out: https://globaldealshub.org`;
+    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: https://globaldealshub.org`;
     if (navigator.share) {
       navigator.share({ title: deal.title, text });
     } else {
       navigator.clipboard.writeText(text);
-      alert('✅ Link copied to clipboard!');
+      alert('✅ Deal link copied to clipboard!');
     }
   };
 
