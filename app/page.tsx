@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Copy, ExternalLink, Flame, Clock, Search, Share2, Heart, Sun, Moon } from 'lucide-react';
+import { Copy, ExternalLink, Flame, Clock, Search, Share2, Heart } from 'lucide-react';
 
 export default function GlobalDealsHub() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,17 +9,6 @@ export default function GlobalDealsHub() {
   const [sortOption, setSortOption] = useState('discount');
   const [timeLeft, setTimeLeft] = useState(48 * 3600);
   const [savedDeals, setSavedDeals] = useState<string[]>([]);
-  const [isDark, setIsDark] = useState(true);
-
-  // Auto-detect system theme
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDark(mediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => setIsDark(e.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
 
   // Load saved deals
   useEffect(() => {
@@ -98,13 +87,8 @@ export default function GlobalDealsHub() {
     localStorage.setItem('savedDeals', JSON.stringify(newSaved));
   };
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
-  };
-
   return (
-    <div className={`min-h-screen ${isDark ? 'bg-zinc-950 text-white' : 'bg-zinc-50 text-zinc-900'}`}>
+    <div className="min-h-screen bg-zinc-950 text-white">
       {/* Navbar */}
       <nav className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
@@ -112,9 +96,6 @@ export default function GlobalDealsHub() {
             <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-3xl">🌍</div>
             <h1 className="text-3xl font-bold tracking-tight">Global Deals Hub</h1>
           </a>
-          <button onClick={toggleTheme} className="p-3 rounded-xl hover:bg-zinc-800 transition">
-            {isDark ? <Sun size={24} /> : <Moon size={24} />}
-          </button>
         </div>
       </nav>
 
