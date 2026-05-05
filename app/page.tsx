@@ -68,19 +68,12 @@ export default function GlobalDealsHub() {
   };
 
   const shareDeal = (deal: any) => {
-    const url = "https://globaldealshub.org";
-    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: ${url}`;
-
+    const text = `🔥 ${deal.discount} at ${deal.store} - ${deal.title}\n\nCheck it out here: https://globaldealshub.org`;
     if (navigator.share) {
-      navigator.share({
-        title: deal.title,
-        text: text,
-        url: url
-      }).catch(() => {});
+      navigator.share({ title: deal.title, text });
     } else {
-      // Fallback for desktop
       navigator.clipboard.writeText(text);
-      alert(`✅ Deal shared! Copied to clipboard:\n\n${text}`);
+      alert('✅ Deal link copied to clipboard!');
     }
   };
 
@@ -172,10 +165,17 @@ export default function GlobalDealsHub() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2">
+                  <button 
+                    onClick={() => copyCode(deal.code)} 
+                    className="flex-1 bg-white text-black py-4 rounded-2xl font-semibold hover:bg-emerald-400 transition flex items-center justify-center gap-2"
+                  >
                     <Copy size={20} /> Copy Code
                   </button>
-                  <a href={deal.affiliate} target="_blank" className="flex-1 border border-white/30 hover:bg-white/10 py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition">
+                  <a 
+                    href={deal.affiliate} 
+                    target="_blank" 
+                    className="flex-1 bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 text-white py-4 rounded-2xl font-semibold flex items-center justify-center gap-2 transition"
+                  >
                     Go to Store <ExternalLink size={20} />
                   </a>
                   <button onClick={() => shareDeal(deal)} className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl">
@@ -233,7 +233,9 @@ export default function GlobalDealsHub() {
 
       <footer className="bg-black py-16 text-center text-sm text-zinc-500 border-t border-white/10">
         This site is supported by affiliate links. We may earn a commission when you shop through our links — at no extra cost to you.<br />
-        © 2026 Global Deals Hub • All Rights Reserved
+        © 2026 Global Deals Hub • 
+        <span className="mx-2">•</span>
+        Affiliate Disclosure • Privacy Policy • Terms of Service
       </footer>
     </div>
   );
