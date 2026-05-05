@@ -170,16 +170,24 @@ export default function GlobalDealsHub() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button onClick={() => copyCode(deal.code)} className="flex-1 bg-white text-black py-4 rounded-2xl font-semibold hover:bg-emerald-400 transition flex items-center justify-center gap-2">
+                  {/* Copy Code Button */}
+                  <button 
+                    onClick={() => copyCode(deal.code)} 
+                    className="flex-1 bg-white hover:bg-gray-100 active:bg-gray-200 text-black py-4 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-md"
+                  >
                     <Copy size={20} /> Copy Code
                   </button>
 
-                  {/* Replaced with ShopButton */}
-                  <ShopButton brand={deal.store.toLowerCase().replace(/\s+/g, '')} url={deal.affiliate}>
+                  {/* Go to Store Button */}
+                  <ShopButton brand={deal.store} url={deal.affiliate}>
                     Go to Store
                   </ShopButton>
 
-                  <button onClick={() => shareDeal(deal)} className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl">
+                  {/* Share Button */}
+                  <button 
+                    onClick={() => shareDeal(deal)} 
+                    className="border border-white/30 hover:bg-white/10 p-4 rounded-2xl transition-all hover:scale-105 active:scale-95"
+                  >
                     <Share2 size={20} />
                   </button>
                 </div>
@@ -189,11 +197,11 @@ export default function GlobalDealsHub() {
         </div>
       )}
 
-      {/* Prop Firms Section remains unchanged */}
+      {/* Prop Firms Section (unchanged) */}
       {activeCategory === 'Prop Firms' && (
         <div className="max-w-7xl mx-auto px-6 pb-24">
           <h2 className="text-4xl font-bold mb-12 text-center">Prop Firms Comparison</h2>
-          {/* ... (your table code stays the same) */}
+          {/* Your existing table code here */}
         </div>
       )}
 
